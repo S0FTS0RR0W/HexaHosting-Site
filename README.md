@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HexaHosting
 
-## Getting Started
+The official website for HexaHosting - premium Minecraft server hosting solutions. Built with modern web technologies to deliver fast, responsive, and accessible information about our Minecraft hosting services.
 
-First, run the development server:
+## 🚀 Features
+
+- **Modern UI** - Built with React 19 and Tailwind CSS for a sleek, responsive design
+- **Fast Performance** - Powered by Next.js 16 for optimal speed and SEO
+- **Type-Safe** - Full TypeScript support for reliable code quality
+- **Component Library** - shadcn/ui components for consistent, accessible UI
+- **Code Quality** - Biome for linting and formatting
+- **Minecraft-Focused** - Showcase hosting plans, server management, and community features
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org) 16
+- **UI Library**: [React](https://react.dev) 19
+- **Styling**: [Tailwind CSS](https://tailwindcss.com)
+- **Components**: [shadcn/ui](https://ui.shadcn.com)
+- **Icons**: [Lucide React](https://lucide.dev)
+- **Language**: [TypeScript](https://www.typescriptlang.org)
+- **Package Manager**: [pnpm](https://pnpm.io)
+- **Linting**: [Biome](https://biomejs.dev)
+
+## 📦 Prerequisites
+
+- Node.js 18+ 
+- pnpm 8+
+
+## 🏃 Getting Started
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repository
+git clone https://github.com/S0FTS0RR0W/HexaHosting-Site.git
+cd HexaHosting-Site
+
+# Install dependencies
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Start the development server:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm dev
+```
 
-## Learn More
+Open [http://localhost:3000](http://localhost:3000) to view the site in your browser. The page will auto-refresh as you make changes.
 
-To learn more about Next.js, take a look at the following resources:
+### Build
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create an optimized production build:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm build
+pnpm start
+```
 
-## Deploy on Vercel
+## 🧹 Code Quality
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Linting
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Check code for errors and warnings:
+
+```bash
+pnpm lint
+```
+
+### Formatting
+
+Format code automatically:
+
+```bash
+pnpm format
+```
+
+## 📂 Project Structure
+
+```
+├── app/                 # Next.js app directory
+│   ├── layout.tsx      # Root layout
+│   ├── page.tsx        # Home page
+│   └── globals.css     # Global styles
+├── components/         # Reusable React components
+│   └── ui/            # UI component library
+├── lib/               # Utility functions and helpers
+├── public/            # Static assets
+├── assets/            # Project images and media
+└── package.json       # Project dependencies
+```
+
+## 🚀 Deployment
+
+This project is optimized for deployment on [Vercel](https://vercel.com), the creators of Next.js. To deploy:
+
+1. Push your code to GitHub
+2. Connect the repository to Vercel
+3. Vercel will automatically detect Next.js and configure the build settings
+
+For other deployment options, refer to the [Next.js deployment documentation](https://nextjs.org/docs/app/building-application/deploying).
+
+## 📝 License
+
+This project is private and owned by HexaHosting.
+
+## 🤝 Contributing
+
+For contributing guidelines, please contact the development team.
+
+---
+
+**Questions?** Contact us or open an issue on the repository.
