@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import Image from 'next/image'
-import logo from '@/assets/HexaHosting-Logo.png'
+import Image from "next/image";
+import Link from "next/link";
+import logo from "@/assets/HexaHosting-Logo.png";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -18,5 +18,5 @@ export default function Home() {
         <Button>Learn More</Button>
       </Link>
     </main>
-  )
+  );
 }

@@ -1,17 +1,14 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
+import Link from "next/link";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
-import { ModeToggle } from "./ui/mode-toggle"
+} from "@/components/ui/navigation-menu";
+import { ModeToggle } from "./ui/mode-toggle";
 
 export function Navbar() {
   return (
@@ -47,5 +44,5 @@ export function Navbar() {
         </div>
       </div>
     </header>
-  )
+  );
 }
