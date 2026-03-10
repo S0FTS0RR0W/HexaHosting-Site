@@ -121,6 +121,16 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+  }
+  html {
+    @apply bg-background;
+  }
+  html.dark {
+    background: linear-gradient(135deg, #001f3f 0%, #0047ab 25%, #1a1a2e 50%, #0f0f1e 75%, #000000 100%);
+    background-attachment: fixed;
+  }
+  html.dark body {
+    @apply bg-transparent;
   }
 }
