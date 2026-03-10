@@ -87,6 +87,8 @@ export function ContactForm() {
         </div>
       ) : (
         <Form
+          action="/api/contact"
+          method="POST"
           onSubmit={handleSubmit}
           className="space-y-6 rounded-lg border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-950"
         >
