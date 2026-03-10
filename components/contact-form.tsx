@@ -81,7 +81,7 @@ export function ContactForm() {
             </h3>
           </div>
           <p className="text-sm text-green-800 dark:text-green-200">
-            Thank you for reaching out. We&apos;ll get back to you as soon as
+            Thank you for reaching out. I&apos;ll get back to you as soon as
             possible.
           </p>
         </div>
