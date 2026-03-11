@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import type React from "react";
+import { createContext, useContext, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface TabsContextValue {
@@ -41,11 +42,15 @@ export function Tabs({
   );
 }
 
-export function TabsList({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+export function TabsList({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   return <div className={cn("flex", className)} {...props} />;
 }
 
-interface TabsTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface TabsTriggerProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   value: string;
 }
 
@@ -64,7 +69,9 @@ export function TabsTrigger({ value, className, ...props }: TabsTriggerProps) {
       aria-selected={isActive}
       className={cn(
         "px-3 py-2 text-sm font-medium",
-        isActive ? "border-b-2 border-primary" : "border-b-2 border-transparent",
+        isActive
+          ? "border-b-2 border-primary"
+          : "border-b-2 border-transparent",
         className,
       )}
       onClick={() => setValue(value)}
@@ -77,7 +84,12 @@ interface TabsContentProps extends React.HTMLAttributes<HTMLDivElement> {
   value: string;
 }
 
-export function TabsContent({ value, children, className, ...props }: TabsContentProps) {
+export function TabsContent({
+  value,
+  children,
+  className,
+  ...props
+}: TabsContentProps) {
   const context = useContext(TabsContext);
   if (!context) {
     throw new Error("TabsContent must be used within Tabs");

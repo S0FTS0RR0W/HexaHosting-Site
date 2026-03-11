@@ -3,10 +3,16 @@
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -115,7 +121,9 @@ export function LoginForm() {
     <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-center">Welcome to HexaHosting</CardTitle>
+          <CardTitle className="text-2xl text-center">
+            Welcome to HexaHosting
+          </CardTitle>
           <CardDescription className="text-center">
             Sign in to your account or create a new one
           </CardDescription>
@@ -168,7 +176,9 @@ export function LoginForm() {
                     </button>
                   </div>
                   {loginErrors.password && (
-                    <p className="text-sm text-red-500">{loginErrors.password}</p>
+                    <p className="text-sm text-red-500">
+                      {loginErrors.password}
+                    </p>
                   )}
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
@@ -236,11 +246,15 @@ export function LoginForm() {
                     </button>
                   </div>
                   {signupErrors.password && (
-                    <p className="text-sm text-red-500">{signupErrors.password}</p>
+                    <p className="text-sm text-red-500">
+                      {signupErrors.password}
+                    </p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-confirm-password">Confirm Password</Label>
+                  <Label htmlFor="signup-confirm-password">
+                    Confirm Password
+                  </Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                     <Input
@@ -254,14 +268,18 @@ export function LoginForm() {
                     />
                     <button
                       type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
                       className="absolute right-3 top-3 h-4 w-4 text-gray-400 hover:text-gray-600"
                     >
                       {showConfirmPassword ? <EyeOff /> : <Eye />}
                     </button>
                   </div>
                   {signupErrors.confirmPassword && (
-                    <p className="text-sm text-red-500">{signupErrors.confirmPassword}</p>
+                    <p className="text-sm text-red-500">
+                      {signupErrors.confirmPassword}
+                    </p>
                   )}
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>

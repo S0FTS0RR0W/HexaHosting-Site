@@ -1,3 +1,4 @@
+/* eslint-disable lint/a11y/noLabelWithoutControl */
 import React from "react";
 import { cn } from "@/lib/utils";
 
@@ -10,7 +11,10 @@ export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
     return (
       <label
         ref={ref}
-        className={cn("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70", className)}
+        className={cn(
+          "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+          className,
+        )}
         {...props}
       />
     );
