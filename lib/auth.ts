@@ -14,6 +14,13 @@ type AuthUser = {
   name?: string;
 };
 
+export type AuthTokenPayload = {
+  sub: string;
+  name?: string;
+  iat: number;
+  exp: number;
+};
+
 type UserRecord = {
   name: string;
   email: string;
@@ -28,6 +35,11 @@ type RegisterInput = {
 
 function toBase64Url(value: string): string {
   return Buffer.from(value, "utf8").toString("base64url");
+}
+
+function parseBase64UrlJson(value: string): unknown {
+  const decoded = Buffer.from(value, "base64url").toString("utf8");
+  return JSON.parse(decoded);
 }
 
 function signToken(payload: Record<string, unknown>, secret: string): string {
@@ -68,6 +80,17 @@ function verifyPassword(password: string, passwordHash: string): boolean {
   return secureCompare(computedHash, expectedHash);
 }
 
+export function createPasswordHash(password: string): string {
+  return hashPassword(password);
+}
+
+export function validatePasswordHash(
+  password: string,
+  passwordHash: string,
+): boolean {
+  return verifyPassword(password, passwordHash);
+}
+
 function resolveTokenSecret(): string | null {
   const configuredSecret = process.env.AUTH_TOKEN_SECRET;
   if (configuredSecret) {
@@ -79,6 +102,82 @@ function resolveTokenSecret(): string | null {
   }
 
   return process.env.ADMIN_PASSWORD ?? "dev-auth-secret";
+}
+
+export function getAuthUserFromToken(token: string): AuthUser | null {
+  const tokenSecret = resolveTokenSecret();
+
+  if (!tokenSecret) {
+    return null;
+  }
+
+  const payload = verifyToken(token, tokenSecret);
+
+  if (!payload?.sub || !isValidEmail(payload.sub)) {
+    return null;
+  }
+
+  return {
+    email: payload.sub,
+    name: typeof payload.name === "string" ? payload.name : undefined,
+  };
+}
+
+export function verifyToken(
+  token: string,
+  secret: string,
+): AuthTokenPayload | null {
+  const parts = token.split(".");
+
+  if (parts.length !== 3) {
+    return null;
+  }
+
+  const [encodedHeader, encodedPayload, signature] = parts;
+  const data = `${encodedHeader}.${encodedPayload}`;
+  const expectedSignature = createHmac("sha256", secret)
+    .update(data)
+    .digest("base64url");
+
+  if (!secureCompare(signature, expectedSignature)) {
+    return null;
+  }
+
+  try {
+    const header = parseBase64UrlJson(encodedHeader) as { alg?: unknown };
+    if (header.alg !== "HS256") {
+      return null;
+    }
+
+    const payload = parseBase64UrlJson(encodedPayload) as {
+      sub?: unknown;
+      name?: unknown;
+      iat?: unknown;
+      exp?: unknown;
+    };
+
+    if (
+      typeof payload.sub !== "string" ||
+      typeof payload.iat !== "number" ||
+      typeof payload.exp !== "number"
+    ) {
+      return null;
+    }
+
+    const now = Math.floor(Date.now() / 1000);
+    if (payload.exp <= now) {
+      return null;
+    }
+
+    return {
+      sub: payload.sub,
+      name: typeof payload.name === "string" ? payload.name : undefined,
+      iat: payload.iat,
+      exp: payload.exp,
+    };
+  } catch {
+    return null;
+  }
 }
 
 export function normalizeEmail(value: string): string {

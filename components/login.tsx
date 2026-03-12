@@ -162,6 +162,7 @@ export function LoginForm() {
         return;
       }
 
+      window.location.href = "/dashboard";
       setSignupSuccess(data.message ?? "Account created successfully.");
       setLoginData({ email: signupData.email, password: "" });
       setSignupData({
