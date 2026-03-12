@@ -15,8 +15,10 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function LoginForm() {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showSignupPassword, setShowSignupPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [activeTab, setActiveTab] = useState<"login" | "signup">("login");
   const [isLoading, setIsLoading] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState("");
   const [signupSuccess, setSignupSuccess] = useState("");
@@ -173,6 +175,33 @@ export function LoginForm() {
     }
   };
 
+  // Reset form and errors when switching tabs
+  const handleTabChange = (value: string) => {
+    if (value !== "login" && value !== "signup") {
+      return;
+    }
+
+    setActiveTab(value);
+    setLoginErrors({});
+    setSignupErrors({});
+    setLoginSuccess("");
+    setSignupSuccess("");
+    setShowLoginPassword(false);
+    setShowSignupPassword(false);
+    setShowConfirmPassword(false);
+
+    if (value === "login") {
+      setLoginData({ email: "", password: "" });
+    } else {
+      setSignupData({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
       <Card className="w-full max-w-md">
@@ -185,7 +214,11 @@ export function LoginForm() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="login" className="w-full">
+          <Tabs
+            value={activeTab}
+            onValueChange={handleTabChange}
+            className="w-full"
+          >
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
@@ -223,18 +256,19 @@ export function LoginForm() {
                     <Input
                       id="login-password"
                       name="password"
-                      type={showPassword ? "text" : "password"}
+                      type={showLoginPassword ? "text" : "password"}
                       placeholder="Enter your password"
                       value={loginData.password}
                       onChange={handleLoginChange}
                       className={`pl-10 pr-10 ${loginErrors.password ? "border-red-500" : ""}`}
+                      aria-label="Password"
                     />
                     <button
                       type="button"
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick={() => setShowLoginPassword(!showLoginPassword)}
                       className="absolute right-3 top-3 h-4 w-4 text-gray-400 hover:text-gray-600"
                     >
-                      {showPassword ? <EyeOff /> : <Eye />}
+                      {showLoginPassword ? <EyeOff /> : <Eye />}
                     </button>
                   </div>
                   {loginErrors.password && (
@@ -299,7 +333,7 @@ export function LoginForm() {
                     <Input
                       id="signup-password"
                       name="password"
-                      type={showPassword ? "text" : "password"}
+                      type={showSignupPassword ? "text" : "password"}
                       placeholder="Create a password"
                       value={signupData.password}
                       onChange={handleSignupChange}
@@ -307,10 +341,10 @@ export function LoginForm() {
                     />
                     <button
                       type="button"
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick={() => setShowSignupPassword(!showSignupPassword)}
                       className="absolute right-3 top-3 h-4 w-4 text-gray-400 hover:text-gray-600"
                     >
-                      {showPassword ? <EyeOff /> : <Eye />}
+                      {showSignupPassword ? <EyeOff /> : <Eye />}
                     </button>
                   </div>
                   {signupErrors.password && (
