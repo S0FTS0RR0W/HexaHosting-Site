@@ -10,13 +10,18 @@ export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
   ({ className, ...props }, ref) => {
     return (
       <label
+        htmlFor=""
+        id=""
         ref={ref}
         className={cn(
           "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
           className,
         )}
         {...props}
-      />
+      >
+        <input type="checkbox" className="sr-only peer" disabled />
+        {props.children}
+      </label>
     );
   },
 );
