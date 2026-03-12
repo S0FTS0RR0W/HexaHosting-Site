@@ -20,7 +20,7 @@ const getStatusColor = (status: string) => {
 
 export default function Blog() {
     return (
-        <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
+        <main className="flex min-h-screen flex-col items-center justify-center p-8 sm:p-16 md:p-24">
             <div className="max-w-4xl mx-auto text-center">
                 <h1 className="text-5xl font-bold mb-6 text-gray-900 dark:text-white">
                     HexaHosting Blog
