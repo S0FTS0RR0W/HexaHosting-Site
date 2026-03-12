@@ -14,6 +14,8 @@ import {
 import { getAuthUserFromToken } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
+export const runtime = "nodejs";
+
 function formatDate(value: Date): string {
   return new Intl.DateTimeFormat("en-US", {
     dateStyle: "medium",

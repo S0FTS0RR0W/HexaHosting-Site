@@ -6,6 +6,8 @@ import {
 } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
+export const runtime = "nodejs";
+
 type UpdatePasswordPayload = {
   currentPassword?: unknown;
   newPassword?: unknown;
