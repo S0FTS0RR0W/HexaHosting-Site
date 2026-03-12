@@ -1,4 +1,9 @@
-import { createHmac, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
+import {
+  createHmac,
+  randomBytes,
+  scryptSync,
+  timingSafeEqual,
+} from "node:crypto";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
@@ -30,7 +35,9 @@ function signToken(payload: Record<string, unknown>, secret: string): string {
   const encodedHeader = toBase64Url(JSON.stringify(header));
   const encodedPayload = toBase64Url(JSON.stringify(payload));
   const data = `${encodedHeader}.${encodedPayload}`;
-  const signature = createHmac("sha256", secret).update(data).digest("base64url");
+  const signature = createHmac("sha256", secret)
+    .update(data)
+    .digest("base64url");
   return `${data}.${signature}`;
 }
 
@@ -82,12 +89,13 @@ export function isValidEmail(value: string): boolean {
   return EMAIL_REGEX.test(value);
 }
 
-export async function registerUser(input: RegisterInput): Promise<
-  | { ok: true; user: AuthUser }
-  | { ok: false; error: string }
-> {
+export async function registerUser(
+  input: RegisterInput,
+): Promise<{ ok: true; user: AuthUser } | { ok: false; error: string }> {
   const email = normalizeEmail(input.email);
-  const adminEmail = process.env.ADMIN_EMAIL ? normalizeEmail(process.env.ADMIN_EMAIL) : null;
+  const adminEmail = process.env.ADMIN_EMAIL
+    ? normalizeEmail(process.env.ADMIN_EMAIL)
+    : null;
 
   if (adminEmail && secureCompare(email, adminEmail)) {
     return { ok: false, error: "This email is reserved." };
@@ -121,9 +129,14 @@ export async function registerUser(input: RegisterInput): Promise<
   };
 }
 
-export async function authenticateUser(email: string, password: string): Promise<AuthUser | null> {
+export async function authenticateUser(
+  email: string,
+  password: string,
+): Promise<AuthUser | null> {
   const normalizedEmail = normalizeEmail(email);
-  const configuredEmail = process.env.ADMIN_EMAIL ? normalizeEmail(process.env.ADMIN_EMAIL) : null;
+  const configuredEmail = process.env.ADMIN_EMAIL
+    ? normalizeEmail(process.env.ADMIN_EMAIL)
+    : null;
   const configuredPassword = process.env.ADMIN_PASSWORD;
 
   if (
@@ -158,7 +171,10 @@ export async function authenticateUser(email: string, password: string): Promise
   };
 }
 
-export function createAuthResponse(user: AuthUser, message: string): NextResponse {
+export function createAuthResponse(
+  user: AuthUser,
+  message: string,
+): NextResponse {
   const tokenSecret = resolveTokenSecret();
 
   if (!tokenSecret) {
