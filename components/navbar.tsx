@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -42,7 +43,10 @@ export function Navbar() {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-2">
+          <Button asChild size="sm">
+            <Link href="/login">Login</Link>
+          </Button>
           <ModeToggle />
         </div>
       </div>
