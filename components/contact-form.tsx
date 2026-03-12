@@ -7,7 +7,6 @@ import {
   MessageSquare,
   User,
 } from "lucide-react";
-import Form from "next/form";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -86,7 +85,7 @@ export function ContactForm() {
           </p>
         </div>
       ) : (
-        <Form
+        <form
           action="/api/contact"
           method="POST"
           onSubmit={handleSubmit}
@@ -220,7 +219,7 @@ export function ContactForm() {
           >
             {isSubmitting ? "Sending..." : "Send Message"}
           </Button>
-        </Form>
+        </form>
       )}
     </div>
   );
