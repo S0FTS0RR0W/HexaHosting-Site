@@ -120,6 +120,8 @@ export function LoginForm() {
         return;
       }
 
+      //redirect to dashboard or home page after successful login
+      window.location.href = "/dashboard";
       setLoginSuccess(data.message ?? "Login successful.");
       setLoginData((prev) => ({ ...prev, password: "" }));
     } catch {
