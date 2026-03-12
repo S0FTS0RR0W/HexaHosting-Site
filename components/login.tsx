@@ -18,6 +18,8 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState("");
+  const [signupSuccess, setSignupSuccess] = useState("");
 
   // Login form state
   const [loginData, setLoginData] = useState({
@@ -58,8 +60,8 @@ export function LoginForm() {
     }
     if (!signupData.password.trim()) {
       newErrors.password = "Password is required";
-    } else if (signupData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+    } else if (signupData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
     }
     if (!signupData.confirmPassword.trim()) {
       newErrors.confirmPassword = "Please confirm your password";
@@ -92,13 +94,37 @@ export function LoginForm() {
       setLoginErrors(errors);
       return;
     }
+
+    setLoginErrors({});
+    setLoginSuccess("");
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Login data:", loginData);
-      alert("Login successful!");
+
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+      });
+
+      const data = (await response.json()) as {
+        error?: string;
+        message?: string;
+      };
+
+      if (!response.ok) {
+        setLoginErrors({ form: data.error ?? "Unable to sign in." });
+        return;
+      }
+
+      setLoginSuccess(data.message ?? "Login successful.");
+      setLoginData((prev) => ({ ...prev, password: "" }));
+    } catch {
+      setLoginErrors({ form: "Something went wrong. Please try again." });
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const handleSignupSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -108,13 +134,43 @@ export function LoginForm() {
       setSignupErrors(errors);
       return;
     }
+
+    setSignupErrors({});
+    setSignupSuccess("");
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Signup data:", signupData);
-      alert("Account created successfully!");
+
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(signupData),
+      });
+
+      const data = (await response.json()) as {
+        error?: string;
+        message?: string;
+      };
+
+      if (!response.ok) {
+        setSignupErrors({ form: data.error ?? "Unable to create account." });
+        return;
+      }
+
+      setSignupSuccess(data.message ?? "Account created successfully.");
+      setLoginData({ email: signupData.email, password: "" });
+      setSignupData({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+    } catch {
+      setSignupErrors({ form: "Something went wrong. Please try again." });
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -136,6 +192,12 @@ export function LoginForm() {
             </TabsList>
             <TabsContent value="login">
               <form onSubmit={handleLoginSubmit} className="space-y-4">
+                {loginErrors.form && (
+                  <p className="text-sm text-red-500">{loginErrors.form}</p>
+                )}
+                {loginSuccess && (
+                  <p className="text-sm text-green-600">{loginSuccess}</p>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="login-email">Email</Label>
                   <div className="relative">
@@ -188,6 +250,12 @@ export function LoginForm() {
             </TabsContent>
             <TabsContent value="signup">
               <form onSubmit={handleSignupSubmit} className="space-y-4">
+                {signupErrors.form && (
+                  <p className="text-sm text-red-500">{signupErrors.form}</p>
+                )}
+                {signupSuccess && (
+                  <p className="text-sm text-green-600">{signupSuccess}</p>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="signup-name">Full Name</Label>
                   <div className="relative">

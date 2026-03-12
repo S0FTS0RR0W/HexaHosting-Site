@@ -45,10 +45,43 @@ pnpm install
 Start the development server:
 
 ```bash
+pnpm db:generate
+pnpm db:migrate
 pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the site in your browser. The page will auto-refresh as you make changes.
+
+### Database
+
+This project uses Prisma with SQLite for local auth storage.
+
+- The local database file is created as `dev.db` and is gitignored.
+- Prisma migrations are stored in `prisma/migrations` and should be committed.
+
+Useful commands:
+
+```bash
+pnpm db:generate
+pnpm db:migrate --name init
+pnpm db:studio
+```
+
+### Environment Variables
+
+Create a `.env` file with at least:
+
+```bash
+DATABASE_URL="file:./dev.db"
+AUTH_TOKEN_SECRET="replace-with-a-long-random-secret"
+```
+
+Optional admin login credentials:
+
+```bash
+ADMIN_EMAIL="admin@example.com"
+ADMIN_PASSWORD="change-me"
+```
 
 ### Build
 
