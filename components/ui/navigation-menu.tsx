@@ -1,9 +1,25 @@
 import { cva } from "class-variance-authority";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, MenuIcon, XIcon } from "lucide-react";
 import { NavigationMenu as NavigationMenuPrimitive } from "radix-ui";
-import type * as React from "react";
+import * as React from "react";
 
 import { cn } from "@/lib/utils";
+
+// use burger menu on mobile and smaller screens
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const updateIsMobile = () => setIsMobile(mediaQuery.matches);
+
+    updateIsMobile();
+    mediaQuery.addEventListener("change", updateIsMobile);
+    return () => mediaQuery.removeEventListener("change", updateIsMobile);
+  }, [breakpoint]);
+
+  return isMobile;
+}
 
 function NavigationMenu({
   className,
@@ -13,6 +29,46 @@ function NavigationMenu({
 }: React.ComponentProps<typeof NavigationMenuPrimitive.Root> & {
   viewport?: boolean;
 }) {
+  const isMobile = useIsMobile();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!isMobile && mobileOpen) {
+      setMobileOpen(false);
+    }
+  }, [isMobile, mobileOpen]);
+
+  if (isMobile) {
+    return (
+      <div className="relative flex w-full items-center">
+        <button
+          type="button"
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
+          onClick={() => setMobileOpen((value) => !value)}
+          className="inline-flex h-9 items-center justify-center rounded-md border bg-background px-3 text-sm hover:bg-accent hover:text-accent-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1"
+        >
+          {mobileOpen ? <XIcon className="size-4" /> : <MenuIcon className="size-4" />}
+          <span className="ml-2">Menu</span>
+        </button>
+
+        <NavigationMenuPrimitive.Root
+          data-slot="navigation-menu"
+          data-mobile="true"
+          data-open={mobileOpen}
+          className={cn(
+            "absolute top-full left-0 z-50 mt-2 w-56 rounded-md border bg-popover p-2 text-popover-foreground shadow",
+            !mobileOpen && "hidden",
+            className,
+          )}
+          {...props}
+        >
+          {children}
+        </NavigationMenuPrimitive.Root>
+      </div>
+    );
+  }
+
   return (
     <NavigationMenuPrimitive.Root
       data-slot="navigation-menu"
@@ -24,7 +80,7 @@ function NavigationMenu({
       {...props}
     >
       {children}
-      {viewport && <NavigationMenuViewport />}
+      {viewport && !isMobile && <NavigationMenuViewport />}
     </NavigationMenuPrimitive.Root>
   );
 }
@@ -37,7 +93,7 @@ function NavigationMenuList({
     <NavigationMenuPrimitive.List
       data-slot="navigation-menu-list"
       className={cn(
-        "group flex flex-1 list-none items-center justify-center gap-1",
+        "group flex flex-1 list-none items-center justify-center gap-1 group-data-[mobile=true]:w-full group-data-[mobile=true]:flex-col group-data-[mobile=true]:items-stretch group-data-[mobile=true]:justify-start",
         className,
       )}
       {...props}
