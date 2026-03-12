@@ -1,48 +1,55 @@
 # HexaHosting
 
-The official website for HexaHosting - premium Minecraft server hosting solutions. Built with modern web technologies to deliver fast, responsive, and accessible information about our Minecraft hosting services.
+HexaHosting is a Next.js website for showcasing Minecraft hosting services. It includes marketing pages, a basic auth flow, and API routes backed by Prisma + SQLite.
 
-## 🚀 Features
+## Overview
 
-- **Modern UI** - Built with React 19 and Tailwind CSS for a sleek, responsive design
-- **Fast Performance** - Powered by Next.js 16 for optimal speed and SEO
-- **Type-Safe** - Full TypeScript support for reliable code quality
-- **Component Library** - shadcn/ui components for consistent, accessible UI
-- **Code Quality** - Biome for linting and formatting
-- **Minecraft-Focused** - Showcase hosting plans, server management, and community features
+- Next.js 16 App Router project with React 19 and TypeScript
+- Tailwind CSS 4 styling and shadcn/ui-based component setup
+- Prisma 7 with SQLite for local user storage
+- API routes for register, login, and contact health check
+- Biome for linting and formatting
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-- **Framework**: [Next.js](https://nextjs.org) 16
-- **UI Library**: [React](https://react.dev) 19
-- **Styling**: [Tailwind CSS](https://tailwindcss.com)
-- **Components**: [shadcn/ui](https://ui.shadcn.com)
-- **Icons**: [Lucide React](https://lucide.dev)
-- **Language**: [TypeScript](https://www.typescriptlang.org)
-- **Package Manager**: [pnpm](https://pnpm.io)
-- **Linting**: [Biome](https://biomejs.dev)
+- Framework: [Next.js](https://nextjs.org) 16
+- UI: [React](https://react.dev) 19
+- Language: [TypeScript](https://www.typescriptlang.org)
+- Styling: [Tailwind CSS](https://tailwindcss.com)
+- Components: [shadcn/ui](https://ui.shadcn.com)
+- ORM: [Prisma](https://www.prisma.io) 7
+- Database: SQLite
+- Linting/Formatting: [Biome](https://biomejs.dev)
+- Package Manager: [pnpm](https://pnpm.io)
 
-## 📦 Prerequisites
+## Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - pnpm 8+
 
-## 🏃 Getting Started
-
-### Installation
+## Setup
 
 ```bash
-# Clone the repository
 git clone https://github.com/S0FTS0RR0W/HexaHosting-Site.git
 cd HexaHosting-Site
-
-# Install dependencies
 pnpm install
 ```
 
-### Development
+Create a `.env` file:
 
-Start the development server:
+```bash
+DATABASE_URL="file:./dev.db"
+AUTH_TOKEN_SECRET="replace-with-a-long-random-secret"
+```
+
+Optional admin credentials (can log in without DB user creation):
+
+```bash
+ADMIN_EMAIL="admin@example.com"
+ADMIN_PASSWORD="change-me"
+```
+
+## Development
 
 ```bash
 pnpm db:generate
@@ -50,99 +57,81 @@ pnpm db:migrate
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the site in your browser. The page will auto-refresh as you make changes.
+App runs at [http://localhost:3000](http://localhost:3000).
 
-### Database
-
-This project uses Prisma with SQLite for local auth storage.
-
-- The local database file is created as `dev.db` and is gitignored.
-- Prisma migrations are stored in `prisma/migrations` and should be committed.
-
-Useful commands:
+## Available Scripts
 
 ```bash
-pnpm db:generate
-pnpm db:migrate --name init
-pnpm db:studio
+pnpm dev          # Start development server
+pnpm build        # Build for production
+pnpm start        # Start production server
+pnpm lint         # Run Biome checks
+pnpm format       # Format with Biome
+pnpm db:generate  # Generate Prisma client
+pnpm db:migrate   # Run local migrations
+pnpm db:studio    # Open Prisma Studio
 ```
 
-### Environment Variables
+## Routes
 
-Create a `.env` file with at least:
+Pages:
 
-```bash
-DATABASE_URL="file:./dev.db"
-AUTH_TOKEN_SECRET="replace-with-a-long-random-secret"
+- `/`
+- `/about`
+- `/blog`
+- `/contact`
+- `/login`
+- `/status`
+
+API:
+
+- `POST /api/register`
+- `POST /api/login`
+- `GET /api/contact`
+
+## Authentication Notes
+
+- Auth responses set an HTTP-only cookie named `hexa_auth`.
+- Tokens are signed with `AUTH_TOKEN_SECRET`.
+- In non-production environments, if `AUTH_TOKEN_SECRET` is missing, a fallback secret is used.
+- In production, `AUTH_TOKEN_SECRET` is required.
+
+## Database
+
+Prisma schema currently includes a `User` model with:
+
+- `id`
+- `name`
+- `email` (unique)
+- `passwordHash`
+- `createdAt`
+- `updatedAt`
+
+Migrations are tracked in `prisma/migrations` and should be committed.
+
+## Project Structure
+
+```text
+app/                 Next.js routes and API endpoints
+components/          Shared React components
+components/ui/       UI primitives
+lib/                 Utilities, Prisma client, auth logic
+prisma/              Prisma schema and migrations
+assets/              Project media assets
+public/              Static public files
 ```
 
-Optional admin login credentials:
+## Deployment
 
-```bash
-ADMIN_EMAIL="admin@example.com"
-ADMIN_PASSWORD="change-me"
-```
+This project can be deployed on Vercel or any platform that supports Next.js.
 
-### Build
-
-Create an optimized production build:
+Standard production flow:
 
 ```bash
 pnpm build
 pnpm start
 ```
 
-## 🧹 Code Quality
+## License
 
-### Linting
-
-Check code for errors and warnings:
-
-```bash
-pnpm lint
-```
-
-### Formatting
-
-Format code automatically:
-
-```bash
-pnpm format
-```
-
-## 📂 Project Structure
-
-```
-├── app/                 # Next.js app directory
-│   ├── layout.tsx      # Root layout
-│   ├── page.tsx        # Home page
-│   └── globals.css     # Global styles
-├── components/         # Reusable React components
-│   └── ui/            # UI component library
-├── lib/               # Utility functions and helpers
-├── public/            # Static assets
-├── assets/            # Project images and media
-└── package.json       # Project dependencies
-```
-
-## 🚀 Deployment
-
-This project is optimized for deployment on [Vercel](https://vercel.com), the creators of Next.js. To deploy:
-
-1. Push your code to GitHub
-2. Connect the repository to Vercel
-3. Vercel will automatically detect Next.js and configure the build settings
-
-For other deployment options, refer to the [Next.js deployment documentation](https://nextjs.org/docs/app/building-application/deploying).
-
-## 📝 License
-
-This project is private and owned by HexaHosting.
-
-## 🤝 Contributing
-
-For contributing guidelines, please contact the development team.
-
----
-
-**Questions?** Contact us or open an issue on the repository.
+This repository is private and owned by HexaHosting.
