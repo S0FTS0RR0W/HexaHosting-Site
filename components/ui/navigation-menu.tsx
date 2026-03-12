@@ -48,7 +48,11 @@ function NavigationMenu({
           onClick={() => setMobileOpen((value) => !value)}
           className="inline-flex h-9 items-center justify-center rounded-md border bg-background px-3 text-sm hover:bg-accent hover:text-accent-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1"
         >
-          {mobileOpen ? <XIcon className="size-4" /> : <MenuIcon className="size-4" />}
+          {mobileOpen ? (
+            <XIcon className="size-4" />
+          ) : (
+            <MenuIcon className="size-4" />
+          )}
           <span className="ml-2">Menu</span>
         </button>
 

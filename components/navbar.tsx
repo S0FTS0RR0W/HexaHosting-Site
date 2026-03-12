@@ -42,6 +42,13 @@ export function Navbar() {
               </Link>
             </NavigationMenuItem>
           </NavigationMenuList>
+          <NavigationMenuItem>
+            <Link href="/blog">
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Blog
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
         </NavigationMenu>
         <div className="ml-auto flex items-center gap-2">
           <Button asChild size="sm">
