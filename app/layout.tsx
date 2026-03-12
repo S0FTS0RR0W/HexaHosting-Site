@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   title: "HexaHosting - Premium Minecraft Server Hosting",
   description:
     "Premium Minecraft server hosting solutions by S0FTS0RR0W. Reliable, high-performance hosting for your gaming community.",
+  icons: {
+    icon: "@/assets/Hexa-Logo-Only.png",
+  },
 };
 
 export default function RootLayout({
